@@ -37,10 +37,6 @@ void printList(char** list){
     }
 }
 
-void deleteString(char** list,String t){
-
-}
-
 int indexOfExactMatch(char** list,String t){
     char** current = list;
     int current_position = 0;
@@ -54,11 +50,33 @@ int indexOfExactMatch(char** list,String t){
     return -1;
 }
 
+void deleteString(char**& list, int pos){
+    if(pos >= getListSize(list))return;
+    if(pos == 0){
+        char** temp = list;
+        list = reinterpret_cast<char **>(list[1]);
+        free(temp);
+        return;
+    }
+    int curr_pos = 0;
+    char** current = list;
+    while (curr_pos+1!=pos){
+        current = reinterpret_cast<char **>(current[1]);
+        curr_pos++;
+    }
+    char** temp = reinterpret_cast<char **>(current[1]);
+    current[1] = temp[1];
+    free(temp);
+}
+
+
+
 int main() {
     int command;
     int n;
     String t;
     char** list = nullptr;
+    int pos;
     do{
         cout<<"Enter 1 to add string\n";
         cout<<"Enter 2 to remove string\n";
@@ -77,12 +95,9 @@ int main() {
                 addString(list,t);
                 break;
             case 2:
-                cout<<"Enter length of string to remove\n";
-                cin>>n;
-                t = (String) malloc(n + 1);
-                cout<<"Enter string\n";
-                cin>>t;
-                deleteString(list,t);
+                cout<<"Enter index of string to remove(numbers from 0)\n";
+                cin>>pos;
+                deleteString(list,pos);
                 break;
             case 3:
                 cout<<"Size of list: "<<getListSize(list)<<endl;
