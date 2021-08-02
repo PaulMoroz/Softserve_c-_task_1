@@ -9,9 +9,17 @@ int getListSize(char** list){
     int size = 0;
     while (current!= nullptr){
         size++;
-        current = &current[1];
+        current = reinterpret_cast<char **>(current[1]);
     }
     return size;
+}
+
+char** getLastElement(char ** list){
+    char** current = list;
+    while (current!= nullptr){
+        current = reinterpret_cast<char **>(current[1]);
+    }
+    return current;
 }
 
 void addString(char**& list,String t){
@@ -82,6 +90,32 @@ void replaceString(char**& list,int pos, String new_string){
     current[0] = new_string;
 }
 
+void sortList(char**& list){
+    int n = getListSize(list);
+    char** left = list;
+    char** right;
+    for(int i=0;i<n;i++){
+        right = reinterpret_cast<char **>(left[1]);
+        for(int j=i + 1;j<n;j++){
+            if(*left[0] > *right[0]) {
+                char* t = left[0];
+                left[0] = right[0];
+                right[0] = t;
+            }
+            right = reinterpret_cast<char **>(right[1]);
+        }
+        left = reinterpret_cast<char **>(left[1]);
+    }
+}
+
+void removeDuplicates(char** list){
+    char** left = list;
+    char** right = list;
+    while (left[1]!= nullptr){
+
+    }
+}
+
 int main() {
     int command;
     int n;
@@ -95,6 +129,7 @@ int main() {
         cout<<"Enter 4 to get the index position of the first exact match of specified string\n";
         cout<<"Enter 5 to print list\n";
         cout<<"Enter 6 to replace string in list\n";
+        cout<<"Enter 7 to sort list\n";
         cout<<"Enter 0 to exit\n";
         cin>>command;
         switch (command) {
@@ -134,6 +169,9 @@ int main() {
                 cout<<"Enter string: ";
                 cin>>t;
                 replaceString(list,pos,t);
+                break;
+            case 7:
+                sortList(list);
                 break;
             default:
                 cout<<"Command not recognized\n";
