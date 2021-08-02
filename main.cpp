@@ -69,7 +69,18 @@ void deleteString(char**& list, int pos){
     free(temp);
 }
 
-
+void replaceString(char**& list,int pos, String new_string){
+    if(pos >= getListSize(list))return;
+    char** current = list;
+    int curr_pos = 0;
+    while (curr_pos!=pos){
+        current = reinterpret_cast<char **>(current[1]);
+        curr_pos++;
+    }
+    char* temp = current[0];
+    free(temp);
+    current[0] = new_string;
+}
 
 int main() {
     int command;
@@ -83,6 +94,7 @@ int main() {
         cout<<"Enter 3 to get number of items in the list\n";
         cout<<"Enter 4 to get the index position of the first exact match of specified string\n";
         cout<<"Enter 5 to print list\n";
+        cout<<"Enter 6 to replace string in list\n";
         cout<<"Enter 0 to exit\n";
         cin>>command;
         switch (command) {
@@ -112,6 +124,16 @@ int main() {
                 break;
             case 5:
                 printList(list);
+                break;
+            case 6:
+                cout<<"Enter index of string to replace(numbers from 0)\n";
+                cin>>pos;
+                cout<<"Enter length of new string\n";
+                cin>>n;
+                t = (String) malloc(n + 1);
+                cout<<"Enter string: ";
+                cin>>t;
+                replaceString(list,pos,t);
                 break;
             default:
                 cout<<"Command not recognized\n";
