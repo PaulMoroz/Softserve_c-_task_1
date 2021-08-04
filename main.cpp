@@ -1,133 +1,9 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string.h>
+#include "list.h"
 using namespace std;
 typedef char* String;
 
-void StringListInit(char*** list){
-    (*list) = (char** ) malloc(2);
-    (*list)[0] = "123";
-    (*list)[1] = nullptr;
-
-}
-
-void StringListDestroy(char*** list){
-    char** curr = (*list);
-    while (curr!= nullptr){
-        char** temp = curr;
-        curr = reinterpret_cast<char **>(curr[1]);
-        free(temp);
-    }
-}
-
-
-int getListSize(char** list){
-    char** current = reinterpret_cast<char **>(list[1]);
-    int size = 0;
-    while (current!= nullptr){
-        size++;
-        current = reinterpret_cast<char **>(current[1]);
-    }
-    return size;
-}
-
-void printList(char** list){
-    char** current = reinterpret_cast<char **>(list[1]);
-    while (current!= nullptr){
-        cout<<current[0]<<endl;
-        current = reinterpret_cast<char **>(current[1]);
-    }
-}
-
-void StringListAdd(char** list,String str){
-    char** new_node = (String*) malloc(2);
-    new_node[0] = str;
-    new_node[1] = nullptr;
-    if(list== nullptr){
-        list = new_node;
-        return;
-    }
-    char** current = list;
-    while (current[1]!= nullptr){
-        current = reinterpret_cast<char **>(current[1]);
-    }
-    current[1] = reinterpret_cast<char *>(new_node);
-}
-
-int StringListIndexOf(char** list,const String str){
-    char** current = reinterpret_cast<char **>(list[1]);
-    int current_position = 0;
-    bool found = false;
-    while (current!= nullptr){
-        if(*current[0]==*str) { found=true;break; }
-        current = reinterpret_cast<char **>(current[1]);
-        current_position++;
-    }
-    if(found)return current_position;
-    return -1;
-}
-
-void StringListRemove(char** list, String str){
-    char** current = list;
-    while (current[1]!= nullptr){
-        char** temp = reinterpret_cast<char **>(current[1]);
-        if(temp!=nullptr  && *(temp)[0]==*str){
-            current[1] = temp[1];
-            free(temp);
-        }else{
-            current = reinterpret_cast<char **>(current[1]);
-        }
-    }
-}
-
-void StringListReplaceInStrings(char** list, char* before, char* after){
-    char** current = reinterpret_cast<char **>(list[1]);
-    while (current!= nullptr){
-        if(*current[0]==*before){
-            char* t = current[0];
-            current[0] = after;
-            free(t);
-        }
-        current = reinterpret_cast<char **>(current[1]);
-    }
-}
-
-void StringListSort(char** list){
-    int n = getListSize(list);
-    char**  left = reinterpret_cast<char **>(list[1]);
-    char** right;
-    for(int i=0;i<n;i++){
-        right = reinterpret_cast<char **>(left[1]);
-        for(int j=i + 1;j<n;j++){
-            if(*left[0] > *right[0]) {
-                char* t = left[0];
-                left[0] = right[0];
-                right[0] = t;
-            }
-            right = reinterpret_cast<char **>(right[1]);
-        }
-        left = reinterpret_cast<char **>(left[1]);
-    }
-}
-
-void StringListRemoveDuplicates(char** list){
-
-    char** left = reinterpret_cast<char **>(list[1]);
-    char** right;
-    while (left[1]!= nullptr){
-        right = left;
-        while (right!= nullptr){
-            char** temp = reinterpret_cast<char **>(right[1]);
-            if(temp!= nullptr && *temp[0] == *left[0]){
-                right[1] = temp[1];
-                free(temp);
-            }else {
-                right = reinterpret_cast<char **>(right[1]);
-            }
-        }
-        if(left[1]!= nullptr)left = reinterpret_cast<char **>(left[1]);
-    }
-}
 
 int main() {
     int command;
@@ -136,7 +12,6 @@ int main() {
     String oldStr;
     String newStr;
     char** list = nullptr;
-    int pos;
     StringListInit(&list);
     do{
         cout<<"Enter 1 to add string\n";
