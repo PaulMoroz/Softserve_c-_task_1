@@ -8,7 +8,18 @@ void StringListInit(char*** list){
     (*list) = (char** ) malloc(2);
     (*list)[0] = "123";
     (*list)[1] = nullptr;
+
 }
+
+void StringListDestroy(char*** list){
+    char** curr = (*list);
+    while (curr!= nullptr){
+        char** temp = curr;
+        curr = reinterpret_cast<char **>(curr[1]);
+        free(temp);
+    }
+}
+
 
 int getListSize(char** list){
     char** current = reinterpret_cast<char **>(list[1]);
@@ -18,21 +29,6 @@ int getListSize(char** list){
         current = reinterpret_cast<char **>(current[1]);
     }
     return size;
-}
-
-void StringListRemoveDuplicates(char** list,String t){
-    /*char** new_node = (String*) malloc(2);
-    new_node[0] = t;
-    new_node[1] = nullptr;
-    if(list== nullptr){
-        list = new_node;
-        return;
-    }
-    char** current = list;
-    while (current[1]!= nullptr){
-        current = reinterpret_cast<char **>(current[1]);
-    }
-    current[1] = reinterpret_cast<char *>(new_node);*/
 }
 
 void printList(char** list){
@@ -71,7 +67,6 @@ int StringListIndexOf(char** list,const String str){
     return -1;
 }
 
-//!FIX free error
 void StringListRemove(char** list, String str){
     char** current = list;
     while (current[1]!= nullptr){
@@ -116,20 +111,22 @@ void StringListSort(char** list){
 }
 
 void StringListRemoveDuplicates(char** list){
-    /*
-    char** left = list;
-    char** right = list;
+
+    char** left = reinterpret_cast<char **>(list[1]);
+    char** right;
     while (left[1]!= nullptr){
-        if(right!=nullptr){
-            return; = reinterpret_cast<char **>(left[1]);
-            if(reinterpret_cast<char *>(right[1][0]) == left[0]){
-                char** temp = reinterpret_cast<char **>(right[1]);
+        right = left;
+        while (right!= nullptr){
+            char** temp = reinterpret_cast<char **>(right[1]);
+            if(temp!= nullptr && *temp[0] == *left[0]){
                 right[1] = temp[1];
                 free(temp);
+            }else {
+                right = reinterpret_cast<char **>(right[1]);
             }
-            if(left[1]!= nullptr)right = reinterpret_cast<char **>(left[1]);
         }
-    }*/
+        if(left[1]!= nullptr)left = reinterpret_cast<char **>(left[1]);
+    }
 }
 
 int main() {
@@ -202,9 +199,13 @@ int main() {
             case 8:
                 StringListRemoveDuplicates(list);
                 break;
+            case 0:
+                cout<<"Exiting...\n";
+                break;
             default:
                 cout<<"Command not recognized\n";
                 break;
         }
     }while(command!=0);
+    StringListDestroy(&list);
 }
