@@ -109,6 +109,11 @@ void StringListRemove(char** list, String str){
 }
 
 void StringListReplaceInStrings(char** list, char* before, char* after){
+    if(list==nullptr) {
+
+        //cout<<"List is null\n";
+        return;
+    }
     char** current = reinterpret_cast<char **>(list[1]);
     while (current!= nullptr){
         if(*current[0]==*before){
@@ -121,6 +126,11 @@ void StringListReplaceInStrings(char** list, char* before, char* after){
 }
 
 void StringListSort(char** list){
+    if(list==nullptr) {
+
+        //cout<<"List is null\n";
+        return;
+    }
     int n = getListSize(list);
     char**  left = reinterpret_cast<char **>(list[1]);
     char** right;
