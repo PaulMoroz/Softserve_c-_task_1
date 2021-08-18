@@ -1,6 +1,3 @@
-//
-// Created by нободи on 04.08.2021.
-//
 
 #ifndef SOFTSERFE_COURSE_TASK_1_LIST_H
 #define SOFTSERFE_COURSE_TASK_1_LIST_H

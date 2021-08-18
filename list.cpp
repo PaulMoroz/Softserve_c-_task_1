@@ -1,7 +1,3 @@
-//
-// Created by нободи on 04.08.2021.
-//
-
 #include "list.h"
 #include <iostream>
 #include <stdlib.h>
@@ -15,7 +11,6 @@ void StringListInit(char*** list){
 
 void StringListDestroy(char*** list){
     if(list==nullptr) {
-        //cout<<"List is null\n";
         return;
     }
     char** curr = (*list);
@@ -26,10 +21,8 @@ void StringListDestroy(char*** list){
     }
 }
 
-
 int getListSize(char** list){
     if(list==nullptr) {
-        //cout<<"List is null\n";
         return -1;
     }
     char** current = reinterpret_cast<char **>(list[1]);
@@ -43,7 +36,6 @@ int getListSize(char** list){
 
 void printList(char** list){
     if(list==nullptr) {
-        //cout<<"List is null\n";
         return;
     }
     char** current = reinterpret_cast<char **>(list[1]);
@@ -55,7 +47,6 @@ void printList(char** list){
 
 void StringListAdd(char** list,String str){
     if(list==nullptr) {
-        //cout<<"List is null\n";
         return;
     }
     char** new_node = (String*) malloc(2);
@@ -70,7 +61,6 @@ void StringListAdd(char** list,String str){
 
 int StringListIndexOf(char** list,const String str){
     if(list==nullptr) {
-        //cout<<"List is null\n";
         return -1;
     }
     char** current = reinterpret_cast<char **>(list[1]);
@@ -93,8 +83,6 @@ int StringListIndexOf(char** list,const String str){
 void StringListRemove(char** list, String str){
     char** current = list;
     if(list==nullptr) {
-
-        //cout<<"List is null\n";
         return;
     }
     while (current[1]!= nullptr){
@@ -110,8 +98,6 @@ void StringListRemove(char** list, String str){
 
 void StringListReplaceInStrings(char** list, char* before, char* after){
     if(list==nullptr) {
-
-        //cout<<"List is null\n";
         return;
     }
     char** current = reinterpret_cast<char **>(list[1]);
@@ -127,8 +113,6 @@ void StringListReplaceInStrings(char** list, char* before, char* after){
 
 void StringListSort(char** list){
     if(list==nullptr) {
-
-        //cout<<"List is null\n";
         return;
     }
     int n = getListSize(list);
@@ -149,7 +133,6 @@ void StringListSort(char** list){
 }
 
 void StringListRemoveDuplicates(char** list){
-
     char** left = reinterpret_cast<char **>(list[1]);
     char** right;
     while (left[1]!= nullptr){
